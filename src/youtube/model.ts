@@ -43,3 +43,15 @@ export interface YouTubeFileFormats {
 export interface YouTubeAudioFileFormats extends YouTubeFileFormats {
   audioQuality: string;
 }
+export interface YouTubeDownloadFileObject {
+  fileId: string;
+  itag: number;
+  path?: string;
+  directoryDownload?: string;
+  title?: string;
+}
+
+export enum YouTubeFileTypes {
+  AUDIO = 'audio',
+  VIDEO = 'video',
+}
