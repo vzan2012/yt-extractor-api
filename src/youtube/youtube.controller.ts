@@ -5,6 +5,7 @@ import {
   HttpStatus,
   HttpException,
   Body,
+  Post,
 } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
 import {
@@ -12,9 +13,9 @@ import {
   YouTubeFileInfo,
   YouTubeFileTypes,
 } from './model';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('YouTube API')
+@ApiTags('YT API')
 @Controller('youtube')
 export class YoutubeController {
   constructor(private readonly youtubeService: YoutubeService) {}
@@ -33,11 +34,19 @@ export class YoutubeController {
     }
   }
 
-  @Get('/download-file')
-  @ApiOperation({ summary: 'Get YouTube File Info By Id' })
+  @Post('/download-file')
+  @ApiOperation({ summary: 'Convert YouTube File' })
   @ApiResponse({
     status: 200,
-    description: 'Retrives YouTube File Information',
+    description: 'Convert YouTube File',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      items: {
+        type: 'object',
+      },
+    },
   })
   downloadFile(
     @Body() fileDetails: YouTubeDownloadFileObject,
