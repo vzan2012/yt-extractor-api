@@ -54,4 +54,5 @@ export interface YouTubeDownloadFileObject {
 export enum YouTubeFileTypes {
   AUDIO = 'audio',
   VIDEO = 'video',
+  AUDIO_VIDEO = 'audio_and_video',
 }
