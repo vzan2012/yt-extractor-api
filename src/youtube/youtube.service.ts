@@ -1,13 +1,25 @@
-import { YouTubeDownloadFileObject, YouTubeFileTypes } from './model';
-
 import { Injectable } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import * as ytdl from 'ytdl-core';
+import { YouTubeFileFormatObject } from './model';
 
+/**
+ * @export
+ * @class YoutubeService
+ * @typedef {YoutubeService}
+ */
 @Injectable()
 export class YoutubeService {
   youtubeURL = 'https://www.youtube.com/watch?v=';
-  async getFileInfo(
+
+  /**
+   * Returns the youtube file information by given id (Eg: https://www.youtube.com/watch?v=5OOmB_yvljA, where 5OOmB_yvljA is the id )
+   *
+   * @async
+   * @param {string} fileId
+   * @returns {Promise<Pick<ytdl.MoreVideoDetails,| 'title'| 'author'| 'videoId'| 'thumbnails'| 'description'| 'category'| 'ownerChannelName'>>}
+   */
+  async getFileInfoById(
     fileId: string,
   ): Promise<
     Pick<
@@ -43,25 +55,56 @@ export class YoutubeService {
     };
   }
 
-  async getDownloadFile(fileId: string, type: ytdl.Filter) {
+  /**
+   * Returns the array of YouTube File Formats given by ID and type
+   *
+   * @async
+   * @param {string} fileId
+   * @param {ytdl.Filter} type
+   * @returns {Promise<YouTubeFileFormatObject[]>}
+   */
+  async getFileFormatsById(
+    fileId: string,
+    type: ytdl.Filter,
+  ): Promise<YouTubeFileFormatObject[]> {
     const { formats } = await ytdl.getInfo(fileId);
 
     const fileFormats = ytdl.filterFormats(formats, type);
 
     const qualityTypes = fileFormats.map((fileFormat) => ({
       quality: fileFormat.quality,
+      container: fileFormat.container,
       qualityLabel: fileFormat.qualityLabel,
       itag: fileFormat.itag,
     }));
 
-    ytdl(`${this.youtubeURL}${fileId}`, {
+    return qualityTypes;
+  }
+
+  /**
+   * Get the YouTube File by given Id and file format
+   *
+   * @async
+   * @param {string} fileId
+   * @param {YouTubeFileFormatObject} fileQuality
+   * @returns {unknown}
+   */
+  async getDownloadFile(fileId: string, fileQuality: YouTubeFileFormatObject) {
+    const {
+      videoDetails: { title: fileTitle },
+      formats,
+    } = await ytdl.getInfo(fileId);
+
+    const { itag: quality, container } = fileQuality;
+
+    const fileName = `${fileTitle.split(' ')[0]}-${
+      fileQuality.quality
+    }.${container}`;
+
+    return ytdl(`${this.youtubeURL}${fileId}`, {
       format: ytdl.chooseFormat(formats, {
-        quality: '18',
+        quality,
       }),
-    }).pipe(createWriteStream('video.mp4'));
-
-    console.log(qualityTypes);
-
-    return fileFormats;
+    }).pipe(createWriteStream(fileName));
   }
 }

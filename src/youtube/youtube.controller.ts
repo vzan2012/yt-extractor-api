@@ -8,14 +8,26 @@ import {
   Post,
 } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import ytdl from 'ytdl-core';
+import { YouTubeFileFormatObject } from './model';
 
+/**
+ * Youtube Controller
+ * @export
+ * @class YoutubeController
+ * @typedef {YoutubeController}
+ */
 @ApiTags('YT API')
 @Controller('youtube')
 export class YoutubeController {
   constructor(private readonly youtubeService: YoutubeService) {}
 
+  /**
+   * Get YouTube File Info By Id
+   * @param {string} fileId
+   * @returns {Promise<Pick<ytdl.MoreVideoDetails,| 'title'| 'author'| 'videoId'| 'thumbnails'| 'description'| 'category'| 'ownerChannelName'>>}
+   */
   @Get('/get-file-info')
   @ApiOperation({ summary: 'Get YouTube File Info By Id' })
   @ApiResponse({
@@ -37,45 +49,63 @@ export class YoutubeController {
     >
   > {
     try {
-      return this.youtubeService.getFileInfo(fileId);
+      return this.youtubeService.getFileInfoById(fileId);
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
+  /**
+   * Get YouTube File Formats Info By Id
+   * @param {string} fileId
+   * @param {ytdl.Filter} fileType
+   * @returns {Promise<YouTubeFileFormatObject[]>}
+   */
+  @Get('/get-file-formats-info')
+  @ApiOperation({ summary: 'Get YouTube File Formats Info By Id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Retrives YouTube File Formats by Given Id',
+  })
+  getFileFormats(
+    @Query('id')
+    fileId: string,
+    @Query('fileType') fileType: ytdl.Filter,
+  ): Promise<YouTubeFileFormatObject[]> {
+    try {
+      return this.youtubeService.getFileFormatsById(fileId, fileType);
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /**
+   * Get YouTube File
+   * @param {string} fileId
+   * @param {YouTubeFileFormatObject} fileQuality
+   * @returns {unknown}
+   */
   @Post('/download-file')
-  // @ApiOperation({ summary: 'Convert YouTube File' })
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'Convert YouTube File',
-  // })
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     items: {
-  //       type: 'object',
-  //     },
-  //   },
-  // })
+  @ApiOperation({ summary: 'Get YouTube File' })
+  @ApiResponse({
+    schema: {
+      type: 'string',
+      format: 'binary',
+    },
+    status: HttpStatus.OK,
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      items: {
+        type: 'object',
+      },
+    },
+  })
   downloadFile(
-    // @Body() fileDetails: YouTubeDownloadFileObject,
-    // @Query('type') type: YouTubeFileTypes,
     @Query('id') fileId: string,
-    @Query('type') type: ytdl.Filter,
+    @Body() fileQuality: YouTubeFileFormatObject,
   ) {
-    return this.youtubeService.getDownloadFile(fileId, type);
-    //   try {
-    //     const { fileId, itag } = fileDetails;
-    //     if (fileId && itag && type) {
-    //       // return this.youtubeService.getDownloadFile(fileDetails, type);
-    //     } else {
-    //       throw new HttpException(
-    //         'Check FileDetails Object and type - fields are missing',
-    //         HttpStatus.NOT_FOUND,
-    //       );
-    //     }
-    //   } catch (error) {
-    //     throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    //   }
+    return this.youtubeService.getDownloadFile(fileId, fileQuality);
   }
 }

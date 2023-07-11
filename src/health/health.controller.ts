@@ -6,6 +6,13 @@ import {
   HealthCheckService,
 } from '@nestjs/terminus';
 
+/**
+ * Health Controller
+ *
+ * @export
+ * @class HealthController
+ * @typedef {HealthController}
+ */
 @ApiTags('YT - Health')
 @Controller('health')
 export class HealthController {
@@ -14,6 +21,11 @@ export class HealthController {
     private disk: DiskHealthIndicator,
   ) {}
 
+  /**
+   * To return the disk health
+   *
+   * @returns {*}
+   */
   @Get()
   @HealthCheck()
   @ApiTags('/')
