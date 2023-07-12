@@ -6,11 +6,13 @@ import {
   HttpException,
   Body,
   Post,
+  Res,
 } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import ytdl from 'ytdl-core';
+import * as ytdl from 'ytdl-core';
 import { YouTubeFileFormatObject } from './model';
+import { Response } from 'express';
 
 /**
  * Youtube Controller
@@ -56,10 +58,11 @@ export class YoutubeController {
   }
 
   /**
-   * Get YouTube File Formats Info By Id
+   *  Get YouTube File Formats Info By Id
+   *
    * @param {string} fileId
    * @param {ytdl.Filter} fileType
-   * @returns {Promise<YouTubeFileFormatObject[]>}
+   * @returns {Promise<Pick<YouTubeFileFormatObject,'quality' | 'container' | 'qualityLabel' | 'itag'>[]>}
    */
   @Get('/get-file-formats-info')
   @ApiOperation({ summary: 'Get YouTube File Formats Info By Id' })
@@ -71,7 +74,12 @@ export class YoutubeController {
     @Query('id')
     fileId: string,
     @Query('fileType') fileType: ytdl.Filter,
-  ): Promise<YouTubeFileFormatObject[]> {
+  ): Promise<
+    Pick<
+      YouTubeFileFormatObject,
+      'quality' | 'container' | 'qualityLabel' | 'itag'
+    >[]
+  > {
     try {
       return this.youtubeService.getFileFormatsById(fileId, fileType);
     } catch (error) {
@@ -81,8 +89,10 @@ export class YoutubeController {
 
   /**
    * Get YouTube File
-   * @param {string} fileId
-   * @param {YouTubeFileFormatObject} fileQuality
+   *
+   * @async
+   * @param {Response} response
+   * @param {YouTubeFileFormatObject} fileQualityFormatObject
    * @returns {unknown}
    */
   @Post('/download-file')
@@ -95,17 +105,40 @@ export class YoutubeController {
     status: HttpStatus.OK,
   })
   @ApiBody({
-    schema: {
-      type: 'object',
-      items: {
-        type: 'object',
-      },
-    },
+    type: YouTubeFileFormatObject,
   })
-  downloadFile(
-    @Query('id') fileId: string,
-    @Body() fileQuality: YouTubeFileFormatObject,
+  async downloadFile(
+    @Res() response: Response,
+    @Body() fileQualityFormatObject: YouTubeFileFormatObject,
   ) {
-    return this.youtubeService.getDownloadFile(fileId, fileQuality);
+    try {
+      const {
+        youtubeURL,
+        fileId,
+        fileName,
+        fileType,
+        container,
+        formats,
+        quality,
+      } = await this.youtubeService.getFileDetailsToDownload(
+        fileQualityFormatObject,
+      );
+
+      // Set the Response Headers
+      response.set({
+        'Content-Type': `Content-Type: ${fileType}/${container}`,
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+      });
+
+      // Add the response to the ytdl pipe (to download the file and not to create or store in the server)
+      return ytdl(`${youtubeURL}${fileId}`, {
+        format: ytdl.chooseFormat(formats, {
+          quality,
+        }),
+      }).pipe(response);
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('Error downloading the file');
+    }
   }
 }

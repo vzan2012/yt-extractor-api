@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import ytdl from 'ytdl-core';
 
 /**
@@ -18,15 +19,80 @@ export enum YouTubeFileTypes {
 }
 
 /**
+ * YouTubeFileDetailsDownload
+ *
+ * @export
+ * @interface YouTubeFileDetailsDownload
+ * @typedef {YouTubeFileDetailsDownload}
+ */
+export interface YouTubeFileDetailsDownload {
+  youtubeURL: string;
+  fileId: string;
+  fileName: string;
+  fileType:
+    | 'video'
+    | 'videoonly'
+    | 'audio'
+    | 'audioonly'
+    | ((format: ytdl.videoFormat) => boolean);
+  container: string;
+  formats: ytdl.videoFormat[];
+  quality: number;
+}
+
+/**
  * YouTube FileFormat Object
  *
  * @export
- * @interface YouTubeFileFormatObject
+ * @class YouTubeFileFormatObject
  * @typedef {YouTubeFileFormatObject}
  */
-export interface YouTubeFileFormatObject {
+export class YouTubeFileFormatObject {
+  @ApiProperty({
+    description: 'File Id of Youtube',
+    required: true,
+    type: String,
+    example: '5OOmB_yvljA',
+  })
+  fileId: string;
+
+  @ApiProperty({
+    description: 'File type of Youtube (audio, video, videoandaudio)',
+    required: true,
+    type: String,
+    example: 'videoandaudio',
+  })
+  type: ytdl.Filter;
+
+  @ApiProperty({
+    description: 'Quality of the file',
+    required: true,
+    type: String,
+    example: 'medium',
+  })
   quality: ExtendString<ytdl.VideoFormatQuality>;
+
+  @ApiProperty({
+    description: 'Quality Label of the file',
+    required: true,
+    type: String,
+    example: '360p',
+  })
   qualityLabel: ytdl.VideoFormatQuality | string;
+
+  @ApiProperty({
+    description: 'Container of the file - mp4, webm etc',
+    required: true,
+    type: String,
+    example: 'mp4',
+  })
   container: string;
+
+  @ApiProperty({
+    description: 'itag number of quality format',
+    required: true,
+    type: Number,
+    example: 18,
+  })
   itag: number;
 }

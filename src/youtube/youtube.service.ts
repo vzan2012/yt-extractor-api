@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { createWriteStream } from 'fs';
 import * as ytdl from 'ytdl-core';
-import { YouTubeFileFormatObject } from './model';
+import { YouTubeFileDetailsDownload, YouTubeFileFormatObject } from './model';
 
 /**
  * @export
@@ -61,12 +61,17 @@ export class YoutubeService {
    * @async
    * @param {string} fileId
    * @param {ytdl.Filter} type
-   * @returns {Promise<YouTubeFileFormatObject[]>}
+   * @returns {Promise<Pick<YouTubeFileFormatObject,'quality' | 'container' | 'qualityLabel' | 'itag'>[]>}
    */
   async getFileFormatsById(
     fileId: string,
     type: ytdl.Filter,
-  ): Promise<YouTubeFileFormatObject[]> {
+  ): Promise<
+    Pick<
+      YouTubeFileFormatObject,
+      'quality' | 'container' | 'qualityLabel' | 'itag'
+    >[]
+  > {
     const { formats } = await ytdl.getInfo(fileId);
 
     const fileFormats = ytdl.filterFormats(formats, type);
@@ -85,26 +90,33 @@ export class YoutubeService {
    * Get the YouTube File by given Id and file format
    *
    * @async
-   * @param {string} fileId
-   * @param {YouTubeFileFormatObject} fileQuality
-   * @returns {unknown}
+   * @param {YouTubeFileFormatObject} fileQualityFormatObject
+   * @returns {Promise<YouTubeFileDetailsDownload>}
    */
-  async getDownloadFile(fileId: string, fileQuality: YouTubeFileFormatObject) {
+  async getFileDetailsToDownload(
+    fileQualityFormatObject: YouTubeFileFormatObject,
+  ): Promise<YouTubeFileDetailsDownload> {
+    const { fileId, itag: quality, container, type } = fileQualityFormatObject;
     const {
       videoDetails: { title: fileTitle },
       formats,
     } = await ytdl.getInfo(fileId);
 
-    const { itag: quality, container } = fileQuality;
-
     const fileName = `${fileTitle.split(' ')[0]}-${
-      fileQuality.quality
+      fileQualityFormatObject.quality
     }.${container}`;
 
-    return ytdl(`${this.youtubeURL}${fileId}`, {
-      format: ytdl.chooseFormat(formats, {
-        quality,
-      }),
-    }).pipe(createWriteStream(fileName));
+    const fileType =
+      type === 'videoandaudio' || type === 'audioandvideo' ? 'video' : type;
+
+    return {
+      youtubeURL: this.youtubeURL,
+      fileId,
+      fileName,
+      fileType,
+      container,
+      formats,
+      quality,
+    };
   }
 }
