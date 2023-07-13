@@ -130,6 +130,8 @@ export class YoutubeController {
         'Content-Disposition': `attachment; filename="${fileName}"`,
       });
 
+      console.log('Download File request controller called');
+
       // Add the response to the ytdl pipe (to download the file and not to create or store in the server)
       return ytdl(`${youtubeURL}${fileId}`, {
         format: ytdl.chooseFormat(formats, {
