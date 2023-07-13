@@ -133,21 +133,41 @@ export class YoutubeController {
       console.log('Download File request controller called');
 
       // Add the response to the ytdl pipe (to download the file and not to create or store in the server)
-      return ytdl(`${youtubeURL}${fileId}`, {
+      // return ytdl(`${youtubeURL}${fileId}`, {
+      //   format: ytdl.chooseFormat(formats, {
+      //     quality,
+      //   }),
+      // })
+      //   .on('info', () => {
+      //     console.log('Video information:');
+      //   })
+      //   .pipe(response)
+      //   .on('finish', () => {
+      //     console.log('File download completed successfully');
+      //   })
+      //   .on('error', (error) => {
+      //     console.error('File download error:', error);
+      //   });
+
+      const stream = ytdl(`${youtubeURL}${fileId}`, {
         format: ytdl.chooseFormat(formats, {
           quality,
         }),
-      })
-        .on('info', () => {
-          console.log('Video information:');
-        })
-        .pipe(response)
-        .on('finish', () => {
-          console.log('File download completed successfully');
-        })
-        .on('error', (error) => {
-          console.error('File download error:', error);
-        });
+      });
+
+      stream.on('info', () => {
+        console.log('Video information:');
+      });
+
+      stream.pipe(response);
+
+      stream.on('finish', () => {
+        console.log('File download completed successfully');
+      });
+
+      stream.on('error', (error) => {
+        console.error('File download error:', error);
+      });
     } catch (error) {
       console.error(error);
       response.status(500).send('Error downloading the file');
