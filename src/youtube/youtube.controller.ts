@@ -138,10 +138,16 @@ export class YoutubeController {
           quality,
         }),
       })
-        .on('info', (info) => {
-          console.log('Video information:', info);
+        .on('info', () => {
+          console.log('Video information:');
         })
-        .pipe(response);
+        .pipe(response)
+        .on('finish', () => {
+          console.log('File download completed successfully');
+        })
+        .on('error', (error) => {
+          console.error('File download error:', error);
+        });
     } catch (error) {
       console.error(error);
       response.status(500).send('Error downloading the file');
