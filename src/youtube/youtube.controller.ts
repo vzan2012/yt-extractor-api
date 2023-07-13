@@ -137,7 +137,11 @@ export class YoutubeController {
         format: ytdl.chooseFormat(formats, {
           quality,
         }),
-      }).pipe(response);
+      })
+        .on('info', (info) => {
+          console.log('Video information:', info);
+        })
+        .pipe(response);
     } catch (error) {
       console.error(error);
       response.status(500).send('Error downloading the file');
