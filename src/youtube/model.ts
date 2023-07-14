@@ -52,7 +52,7 @@ export class YouTubeFileFormatObject {
     description: 'File Id of Youtube',
     required: true,
     type: String,
-    example: '5OOmB_yvljA',
+    example: 'JzPfMbG1vrE',
   })
   fileId: string;
 
