@@ -43,7 +43,7 @@ export class HealthController {
         }),
       () =>
         this.disk.checkStorage('Disk Health', {
-          threshold: 75 * 1024 * 1024 * 1024,
+          threshold: 100 * 1024 * 1024 * 1024,
           path: '/',
         }),
     ]);
