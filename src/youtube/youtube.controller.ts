@@ -10,10 +10,9 @@ import {
 } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import ytdl, { chooseFormat } from 'ytdl-core';
+import * as ytdl from 'ytdl-core';
 import { YouTubeFileFormatObject } from './model';
 import { Response } from 'express';
-import { info } from 'console';
 
 /**
  * Youtube Controller
@@ -129,46 +128,27 @@ export class YoutubeController {
       response.set({
         'Content-Type': `Content-Type: ${fileType}/${container}`,
         'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Transfer-Encoding': 'chunked',
       });
 
       console.log('Download File request controller called');
 
       // Add the response to the ytdl pipe (to download the file and not to create or store in the server)
-      // return ytdl(`${youtubeURL}${fileId}`, {
-      //   format: ytdl.chooseFormat(formats, {
-      //     quality,
-      //   }),
-      // })
-      //   .on('info', () => {
-      //     console.log('Video information:');
-      //   })
-      //   .pipe(response)
-      //   .on('finish', () => {
-      //     console.log('File download completed successfully');
-      //   })
-      //   .on('error', (error) => {
-      //     console.error('File download error:', error);
-      //   });
-
-      const stream = ytdl(`${youtubeURL}${fileId}`, {
-        format: chooseFormat(formats, {
+      return ytdl(`${youtubeURL}${fileId}`, {
+        format: ytdl.chooseFormat(formats, {
           quality,
         }),
-      });
-
-      stream.on('info', () => {
-        console.log('Video information Title: ' + info.name);
-      });
-
-      stream.pipe(response);
-
-      stream.on('finish', () => {
-        console.log('File download completed successfully');
-      });
-
-      stream.on('error', (error) => {
-        console.error('File download error:', error);
-      });
+      })
+        .on('info', () => {
+          console.log('Video information:');
+        })
+        .pipe(response)
+        .on('finish', () => {
+          console.log('File download completed successfully');
+        })
+        .on('error', (error) => {
+          console.error('File download error:', error);
+        });
     } catch (error) {
       console.error(error);
       response.status(500).send('Error downloading the file');
