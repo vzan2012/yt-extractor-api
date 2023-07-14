@@ -141,6 +141,7 @@ export class YoutubeController {
       })
         .on('info', () => {
           console.log('Video information:');
+          console.log(`Media type - ${fileType}/${container}`);
         })
         .pipe(response)
         .on('finish', () => {
