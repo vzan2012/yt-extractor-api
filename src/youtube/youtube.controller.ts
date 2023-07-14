@@ -13,6 +13,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import * as ytdl from 'ytdl-core';
 import { YouTubeFileFormatObject } from './model';
 import { Response } from 'express';
+import { info } from 'console';
 
 /**
  * Youtube Controller
@@ -156,7 +157,7 @@ export class YoutubeController {
       });
 
       stream.on('info', () => {
-        console.log('Video information:');
+        console.log('Video information Title: ' + info.name);
       });
 
       stream.pipe(response);
