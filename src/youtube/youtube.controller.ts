@@ -126,7 +126,7 @@ export class YoutubeController {
 
       // Set the Response Headers
       response.set({
-        'Content-Type': `Content-Type: ${fileType}/${container}`,
+        // 'Content-Type': `Content-Type: ${fileType}/${container}`,
         'Content-Disposition': `attachment; filename="${fileName}"`,
         'Transfer-Encoding': 'chunked',
       });
