@@ -38,7 +38,7 @@ export class HealthController {
     return this.health.check([
       () =>
         this.disk.checkStorage('Disk Health', {
-          thresholdPercent: 0.5,
+          thresholdPercent: 0.7,
           path: '/',
         }),
       () =>
