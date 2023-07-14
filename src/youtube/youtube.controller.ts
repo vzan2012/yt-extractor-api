@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import * as ytdl from 'ytdl-core';
+import ytdl, { chooseFormat } from 'ytdl-core';
 import { YouTubeFileFormatObject } from './model';
 import { Response } from 'express';
 import { info } from 'console';
@@ -151,7 +151,7 @@ export class YoutubeController {
       //   });
 
       const stream = ytdl(`${youtubeURL}${fileId}`, {
-        format: ytdl.chooseFormat(formats, {
+        format: chooseFormat(formats, {
           quality,
         }),
       });
