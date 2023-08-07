@@ -9,7 +9,13 @@ import {
   Res,
 } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import * as ytdl from 'ytdl-core';
 import { YouTubeFileFormatObject } from './model';
 import { Response } from 'express';
@@ -69,6 +75,12 @@ export class YoutubeController {
   @ApiResponse({
     status: 200,
     description: 'Retrives YouTube File Formats by Given Id',
+  })
+  @ApiQuery({
+    name: 'fileType',
+    example:
+      'audioandvideo or videoandaudio or video or videoonly or audio or audioonly',
+    description: 'Enter the file type',
   })
   getFileFormats(
     @Query('id')
