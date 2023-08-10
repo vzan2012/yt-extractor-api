@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { createWriteStream } from 'fs';
 import * as ytdl from 'ytdl-core';
 import { YouTubeFileDetailsDownload, YouTubeFileFormatObject } from './model';
+import { UtilsService } from 'src/utils/utils.service';
 
 /**
  * @export
@@ -10,6 +10,14 @@ import { YouTubeFileDetailsDownload, YouTubeFileFormatObject } from './model';
  */
 @Injectable()
 export class YoutubeService {
+  /**
+   * Creates an instance of UtilsService.
+   *
+   * @constructor
+   * @param {UtilsService} utilsService
+   */
+  constructor(private utilsService: UtilsService) {}
+
   youtubeURL = 'https://www.youtube.com/watch?v=';
 
   /**
@@ -17,7 +25,7 @@ export class YoutubeService {
    *
    * @async
    * @param {string} fileId
-   * @returns {Promise<Pick<ytdl.MoreVideoDetails,| 'title'| 'author'| 'videoId'| 'thumbnails'| 'description'| 'category'| 'ownerChannelName'>>}
+   * @returns {Promise<Pick<ytdl.MoreVideoDetails, | 'title'| 'author'| 'videoId'| 'thumbnails'| 'description'| 'category'| 'ownerChannelName'>>}
    */
   async getFileInfoById(
     fileId: string,
@@ -102,9 +110,12 @@ export class YoutubeService {
       formats,
     } = await ytdl.getInfo(fileId);
 
-    const fileName = `${fileTitle.split(' ')[0]}-${
-      fileQualityFormatObject.quality
-    }.${container}`;
+    const updatedFileName = this.utilsService.getUpdatedFileName(
+      fileId,
+      fileTitle.split(' ')[0],
+    );
+
+    const fileName = `${updatedFileName}-${fileQualityFormatObject.quality}.${container}`;
 
     const fileType =
       type === 'videoandaudio' || type === 'audioandvideo' ? 'video' : type;
