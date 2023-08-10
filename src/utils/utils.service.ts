@@ -32,5 +32,5 @@ export class UtilsService {
    * @returns {string}
    */
   getUpdatedFileName = (fileId: string, givenWord: string) =>
-    this.isEnglishLanguage(givenWord) ? givenWord : fileId;
+    this.isEnglishLanguage(givenWord) ? `${givenWord}-${fileId}` : fileId;
 }
