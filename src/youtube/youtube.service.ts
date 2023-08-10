@@ -16,7 +16,10 @@ export class YoutubeService {
    * @constructor
    * @param {UtilsService} utilsService
    */
-  constructor(private utilsService: UtilsService) {}
+  constructor(
+    private youtubeService: YoutubeService,
+    private utilsService: UtilsService,
+  ) {}
 
   youtubeURL = 'https://www.youtube.com/watch?v=';
 
