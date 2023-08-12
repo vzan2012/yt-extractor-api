@@ -5,6 +5,15 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+[![Code Quality](https://api.codeclimate.com/v1/badges/your-codeclimate-badge.svg)](https://codeclimate.com/github/vzan2012/yt-extractor-api)
+![GitHub Stars](https://img.shields.io/github/stars/vzan2012/yt-extractor-api)
+![GitHub Forks](https://img.shields.io/github/forks/vzan2012/yt-extractor-api)
+![Dependencies](https://img.shields.io/david/vzan2012/yt-extractor-api)
+![Contributors](https://img.shields.io/github/contributors/vzan2012/yt-extractor-api)
+![Pull Requests](https://img.shields.io/github/issues-pr/vzan2012/yt-extractor-api)
+
   <h1 align="center">YT Extractor API</h1>
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
