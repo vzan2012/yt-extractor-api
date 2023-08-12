@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { YoutubeService } from './youtube.service';
 import { YoutubeController } from './youtube.controller';
-import { UtilsService } from 'src/utils/utils.service';
-import { UtilsModule } from 'src/utils/utils.module';
+import { UtilsService } from '../utils/utils.service';
+import { UtilsModule } from '../utils/utils.module';
 
 /**
  * YouTube Module

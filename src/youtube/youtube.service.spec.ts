@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { YoutubeService } from './youtube.service';
-import { UtilsService } from 'src/utils/utils.service';
-import { UtilsModule } from 'src/utils/utils.module';
+import { UtilsService } from '../utils/utils.service';
+import { UtilsModule } from '../utils/utils.module';
 import { YoutubeModule } from './youtube.module';
 
 describe('YoutubeService', () => {
@@ -10,11 +10,12 @@ describe('YoutubeService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [YoutubeService, UtilsService],
+      providers: [UtilsService, YoutubeService],
       imports: [YoutubeModule, UtilsModule],
     }).compile();
 
     youtubeService = module.get<YoutubeService>(YoutubeService);
+    utilsService = module.get<UtilsService>(UtilsService);
   });
 
   it('should be defined', () => {

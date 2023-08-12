@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as ytdl from 'ytdl-core';
 import { YouTubeFileDetailsDownload, YouTubeFileFormatObject } from './model';
-import { UtilsService } from 'src/utils/utils.service';
+import { UtilsService } from '../utils/utils.service';
 
 /**
  * @export
@@ -16,10 +16,7 @@ export class YoutubeService {
    * @constructor
    * @param {UtilsService} utilsService
    */
-  constructor(
-    private youtubeService: YoutubeService,
-    private utilsService: UtilsService,
-  ) {}
+  constructor(private readonly utilsService: UtilsService) {}
 
   youtubeURL = 'https://www.youtube.com/watch?v=';
 
