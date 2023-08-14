@@ -54,4 +54,13 @@ describe('YoutubeController', () => {
       }
     });
   });
+
+  describe('getFileInfoById', () => {
+    it('should return Promise', async () => {
+      const fileType = 'videoandaudio';
+      expect(youtubeController.getFileFormats(fileId, fileType)).toBeInstanceOf(
+        Promise,
+      );
+    });
+  });
 });
