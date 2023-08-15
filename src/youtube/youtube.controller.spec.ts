@@ -44,13 +44,23 @@ describe('YoutubeController', () => {
 
       jest
         .spyOn(ytdlMock, 'getInfo')
-        .mockRejectedValue(new Error(errorMessage));
+        .mockRejectedValue(
+          new HttpException(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR),
+        );
+
+      jest
+        .spyOn(youtubeService, 'getFileInfoById')
+        .mockRejectedValue(
+          new HttpException(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR),
+        );
 
       try {
         await youtubeController.getFileInfo(invalidFileId);
         fail('Expecting an exception to throw error');
       } catch (error) {
-        expect(error.message).toEqual(errorMessage);
+        expect(error).toBeInstanceOf(HttpException);
+        expect(error.response).toEqual(errorMessage);
+        expect(error.status).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);
       }
     });
   });
