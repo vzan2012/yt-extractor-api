@@ -124,6 +124,7 @@ export class YoutubeController {
     @Body() fileQualityFormatObject: YouTubeFileFormatObject,
   ) {
     try {
+      let downloadedBytes = 0;
       const {
         youtubeURL,
         fileId,
@@ -154,6 +155,13 @@ export class YoutubeController {
         .on('info', () => {
           console.log('Video information:');
           console.log(`Media type - ${fileType}/${container}`);
+        })
+        .on('progress', (chunkLength, downloaded, total) => {
+          const percent = (downloaded / total) * 100;
+          setTimeout(
+            () => console.log(`File Downloaded: ${percent.toFixed(2)} / 100`),
+            6000,
+          );
         })
         .pipe(response)
         .on('finish', () => {
