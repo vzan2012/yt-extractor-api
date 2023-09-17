@@ -7,10 +7,16 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-[![Code Quality](https://api.codeclimate.com/v1/badges/your-codeclimate-badge.svg)](https://codeclimate.com/github/vzan2012/yt-extractor-api)
+
+<!-- TODO: Need to check CodeQuality external site -->
+<!-- [![Code Quality](https://api.codeclimate.com/v1/badges/your-codeclimate-badge.svg)](https://codeclimate.com/github/vzan2012/yt-extractor-api) -->
+
 ![GitHub Stars](https://img.shields.io/github/stars/vzan2012/yt-extractor-api)
 ![GitHub Forks](https://img.shields.io/github/forks/vzan2012/yt-extractor-api)
-![Dependencies](https://img.shields.io/david/vzan2012/yt-extractor-api)
+
+<!-- TODO: Need to check the dependencies link -->
+<!-- ![Dependencies](https://img.shields.io/david/vzan2012/yt-extractor-api) -->
+
 ![Contributors](https://img.shields.io/github/contributors/vzan2012/yt-extractor-api)
 ![Pull Requests](https://img.shields.io/github/issues-pr/vzan2012/yt-extractor-api)
 
