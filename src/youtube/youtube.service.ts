@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as ytdl from 'ytdl-core';
+import * as ytdl from '@distube/ytdl-core';
 import { YouTubeFileDetailsDownload, YouTubeFileFormatObject } from './model';
 import { UtilsService } from '../utils/utils.service';
 

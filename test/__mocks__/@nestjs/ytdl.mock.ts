@@ -1,5 +1,5 @@
 import { Provider } from '@nestjs/common';
-import * as ytdl from 'ytdl-core';
+import * as ytdl from '@distube/ytdl-core';
 
 export const YtdlMock: Provider = {
   provide: ytdl,

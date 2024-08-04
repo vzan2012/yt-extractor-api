@@ -16,7 +16,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import * as ytdl from 'ytdl-core';
+import * as ytdl from '@distube/ytdl-core';
 import { YouTubeFileFormatObject } from './model';
 import { Response } from 'express';
 
@@ -124,7 +124,6 @@ export class YoutubeController {
     @Body() fileQualityFormatObject: YouTubeFileFormatObject,
   ) {
     try {
-      let downloadedBytes = 0;
       const {
         youtubeURL,
         fileId,

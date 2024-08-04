@@ -4,7 +4,7 @@ import { UtilsModule } from '../utils/utils.module';
 import { UtilsService } from '../utils/utils.service';
 import { YoutubeService } from './youtube.service';
 
-import * as ytdl from 'ytdl-core';
+import * as ytdl from '@distube/ytdl-core';
 import { YtdlMock } from '../../test/__mocks__/@nestjs/ytdl.mock';
 import { fileId, mockInfo } from '../../test/__mocks__/inputs';
 import { HttpException, HttpStatus } from '@nestjs/common';
