@@ -7,6 +7,17 @@ import * as ytdl from '@distube/ytdl-core';
  */
 type ExtendString<T extends string> = T | Omit<string, T>;
 
+type VideoFormatQuality =
+  | 'tiny'
+  | 'small'
+  | 'medium'
+  | 'large'
+  | 'hd720'
+  | 'hd1080'
+  | 'hd1440'
+  | 'hd2160'
+  | 'highres';
+
 /**
  * YouTube File Types
  * @export
@@ -70,8 +81,7 @@ export class YouTubeFileFormatObject {
     type: String,
     example: 'medium',
   })
-  // quality: ExtendString<ytdl.VideoFormatQuality | string>;
-  quality: ExtendString<string>;
+  quality: ExtendString<VideoFormatQuality | string>;
 
   @ApiProperty({
     description: 'Quality Label of the file',
@@ -79,8 +89,7 @@ export class YouTubeFileFormatObject {
     type: String,
     example: '360p',
   })
-  // qualityLabel: ytdl.VideoFormatQuality | string;
-  qualityLabel: string;
+  qualityLabel: VideoFormatQuality | string;
 
   @ApiProperty({
     description: 'Container of the file - mp4, webm etc',
