@@ -1,4 +1,5 @@
 export const fileId = 'DY8PcOMK2N0';
+export const maxTimeOut = 10000;
 export const mockInfo = {
   title:
     'Best Funny Mobile Gameplay 👀🤔 #gaming #funnygameplay #puzzle #game #funny #viral #shorts',
