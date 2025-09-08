@@ -21,7 +21,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.11",
+    "@distube/ytdl-core": "^4.16.12",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
