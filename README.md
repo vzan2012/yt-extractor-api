@@ -1,92 +1,120 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <a href="https://nestjs.com/" target="_blank" rel="noopener">
+    <img src="https://nestjs.com/img/logo-small.svg" width="100" alt="NestJS Logo" />
+  </a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# YT Extractor API
 
-<!-- TODO: Need to check CodeQuality external site -->
-<!-- [![Code Quality](https://api.codeclimate.com/v1/badges/your-codeclimate-badge.svg)](https://codeclimate.com/github/vzan2012/yt-extractor-api) -->
+A **NestJS** API that uses **@distube/ytdl-core** to:
 
-<!-- TODO: Need to check the dependencies link -->
-<!-- ![Dependencies](https://img.shields.io/david/vzan2012/yt-extractor-api) -->
+- fetch YouTube **file info** (title, author, description, thumbnails),
+- list **available formats** (audio/video, itag, container, quality),
+- and **download** the chosen format.
 
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![GitHub Stars](https://img.shields.io/github/stars/vzan2012/yt-extractor-api)
-![GitHub Forks](https://img.shields.io/github/forks/vzan2012/yt-extractor-api)
-![Contributors](https://img.shields.io/github/contributors/vzan2012/yt-extractor-api)
-![Pull Requests](https://img.shields.io/github/issues-pr/vzan2012/yt-extractor-api)
+> ⚠️ For educational/personal use. Respect YouTube’s Terms of Service.
 
-  <h1 align="center">YT Extractor API</h1>
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Table of Contents
 
-This YT Extractor API is developed using - [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started (Run Locally)](#getting-started-run-locally)
+- [Using Swagger (/api-docs)](#using-swagger-api-docs)
+- [Author](#author)
+- [License](#license)
 
-## Installation
+---
 
-```bash
-$ npm install
-```
+## Features
 
-## Running the app
+- 📄 Get video/audio **metadata** by YouTube ID.
+- 🧩 List **formats** with `itag`, `container`, `quality`, `type`.
+- ⬇️ **Download** video/audio by `fileId` + `itag`.
+- ❤️ Health checks.
 
-```bash
-# development
-$ npm run start
+---
 
-# watch mode
-$ npm run start:dev
+## Tech Stack
 
-# production mode
-$ npm run start:prod
-```
+- **NestJS** (`@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`)
+- **@distube/ytdl-core** for YouTube extraction
+- **Swagger** via `@nestjs/swagger` (served at **/api-docs**)
+- **Jest** for testing
+- **ESLint** + **Prettier** for code quality
 
-## Test
+---
+
+## Getting Started (Run Locally)
+
+> Prereqs: **Node 18+** recommended, **npm**.
 
 ```bash
-# unit tests
-$ npm run test
+# 1) Install dependencies
+npm install
 
-# e2e tests
-$ npm run test:e2e
+# 2) Start in dev mode (watch)
+npm run start:dev
+# or start normally
+npm run start
 
-# test coverage
-$ npm run test:cov
+# 3) Open the app
+# Base URL:
+#   http://localhost:3000
+# Swagger UI:
+#   http://localhost:3000/api-docs
 ```
 
-## Hosting Services
+## Using Swagger (/api-docs)
 
-Cyclic.sh <br />
+Open [http://localhost:3000/api-docs](http://localhost:3000/api-docs) and use **Try it out**:
 
-**Site:** [YT Extractor API](https://lazy-plum-underclothes.cyclic.app/) <br/>
-**API Docs:** [YT Extractor API Docs](https://lazy-plum-underclothes.cyclic.app/api-docs)
+### A) Get File Info
 
-## Support
+1. Go to **GET `/youtube/get-file-info`**
+2. Click **Try it out**
+3. Enter **`id`** (YouTube ID, e.g. `JzPfMbG1vrE`)
+4. Click **Execute**
+5. Inspect the response (title, description, thumbnails, etc.)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch (For YT Extractor API)
+### B) Get Formats
 
-- Author - [Deepak Guptha Sitharaman](https://vzan2012.github.io)
+1. Go to **GET `/youtube/get-file-formats-info`**
+2. Click **Try it out**
+3. Enter **`id`** (e.g. `JzPfMbG1vrE`)
+4. Enter **`fileType`** (one of: `audioandvideo`, `videoandaudio`, `video`, `videoonly`, `audio`, `audioonly`)
+5. Click **Execute**
+6. From the response, pick a **format** and note its **`itag`** (and optionally `container`, `quality`, etc.)
+
+---
+
+### C) Download a File
+
+1. Go to **POST `/youtube/download-file`**
+2. Click **Try it out**
+3. In the **Request body**, provide either:
+
+```json
+{
+  "fileId": "JzPfMbG1vrE",
+  "itag": 18,
+  "type": "videoandaudio",
+  "quality": "medium",
+  "qualityLabel": "360p",
+  "container": "mp4",
+  "itag": 18
+}
+```
+
+## Author
+
+**Deepak Guptha Sitharaman**
+
+- GitHub: [https://github.com/vzan2012](https://github.com/vzan2012)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
